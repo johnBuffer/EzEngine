@@ -1,11 +1,12 @@
 #pragma once
-#include "pose.hpp"
+#include <stdint.h>
 
 class Entity
 {
 public:
-	Entity() = default;
+	Entity();
 
 protected:
-	Pose2f _pose;
+	uint32_t _id;
+
 };

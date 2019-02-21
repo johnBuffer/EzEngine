@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include "FastVersatileArray.hpp"
 #include "Component.hpp"
 
 class System
@@ -9,7 +9,9 @@ public:
 	System();
 
 	virtual void update(float dt);
+	virtual void init();
 	
 protected:
-	std::vector<Component> m_components;
+	uint32_t _signature;
+
 };

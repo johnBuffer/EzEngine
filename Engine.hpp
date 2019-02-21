@@ -1,16 +1,31 @@
 #pragma once
 
 #include "System.hpp"
+#include <map>
+
+
 
 class Engine
 {
 public:
-	Engine();
+	Engine() = default;
 
-	void update(float dt);
+	void update(float dt)
+	{
+		for (System& system : _systems)
+		{
+			system.update(dt);
+		}
+	}
 
-	void addSystem(System* s);
+	template<typename... Args>
+	void foreach()
+	{
+
+	}
 
 private:
-	std::vector<System> m_systems;
+	fva::FastArray<System> _systems;
+
+	std::map<uint32_t, int> _components;
 };

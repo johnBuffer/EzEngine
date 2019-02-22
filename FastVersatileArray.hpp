@@ -47,9 +47,10 @@ public:
 	SwapArray() = default;
 
 	template<typename... Args>
-	Handle<T> add(Args&&...);
+	uint32_t add(Args&&...);
 	void remove(Handle<T>& handle);
 
+	T& operator[](uint32_t index);
 	T& operator[](const Handle<T>& handle);
 
 	typename std::vector<T>::iterator begin();
@@ -67,13 +68,11 @@ private:
 	std::vector<uint32_t> _reverse_index;
 
 	std::list<uint32_t> _free_indexes;
-
-	T& operator[](uint32_t index);
 };
 
 template<class T>
 template<typename... Args>
-inline Handle<T> SwapArray<T>::add(Args&&... args)
+inline uint32_t SwapArray<T>::add(Args&&... args)
 {
 	// Compute data_index (index in _data) and init index (index for access from outside)
 	uint32_t data_index = uint32_t(_data.size());

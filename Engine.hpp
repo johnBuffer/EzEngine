@@ -3,12 +3,13 @@
 #include "System.hpp"
 #include "Entity.hpp"
 
-
-
 class Engine
 {
 public:
-	Engine() = default;
+	Engine() :
+		_entity_counter(0),
+		_component_counter(0)
+	{}
 
 	void update(float dt)
 	{
@@ -18,19 +19,22 @@ public:
 		}
 	}
 
-	template<typename... Args>
-	void foreach()
-	{
-
-	}
-
 	Entity create()
 	{
-		return Entity(++_counter);
+		return Entity(++_entity_counter);
+	}
+
+	void addSystem();
+
+	template<typename T>
+	void registerComponent()
+	{
+		T::init(++_component_counter);
 	}
 
 private:
 	fva::SwapArray<System> _systems;
 
-	uint32_t _counter;
+	uint32_t _entity_counter;
+	uint32_t _component_counter;
 };

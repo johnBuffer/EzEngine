@@ -1,7 +1,7 @@
 #pragma once
 
 #include "System.hpp"
-#include <map>
+#include "Entity.hpp"
 
 
 
@@ -24,8 +24,13 @@ public:
 
 	}
 
-private:
-	fva::FastArray<System> _systems;
+	Entity create()
+	{
+		return Entity(++_counter);
+	}
 
-	std::map<uint32_t, int> _components;
+private:
+	fva::SwapArray<System> _systems;
+
+	uint32_t _counter;
 };

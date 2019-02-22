@@ -3,7 +3,6 @@
 
 #include "Helper.hpp"
 #include "Component.hpp"
-#include "container.hpp"
 
 struct LOL : public Component<LOL>
 {
@@ -21,7 +20,7 @@ int main()
 
 	while (true)
 	{
-		engine.update(0.016);
+		engine.update(0.016f);
 	}
 
 	return 0;

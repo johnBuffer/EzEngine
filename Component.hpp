@@ -21,6 +21,12 @@ public:
 		return _signature;
 	}
 
+	template<typename... Args>
+	static fva::Handle<T> add(Args&&... args)
+	{
+		return _data.add(args);
+	}
+
 protected:
 	Component() :
 		_id(0),
@@ -38,7 +44,7 @@ protected:
 	uint32_t _entity_id;
 
 	static uint64_t _signature;
-	static fva::FastArray<T> _data;
+	static fva::SwapArray<T> _data;
 };
 
 template<typename T> 

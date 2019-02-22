@@ -16,17 +16,28 @@ public:
 	template<typename T, typename... Args>
 	void addComponent(Args&&... args)
 	{
+		// Add the component to the entity
 		uint32_t component_id = T::add(_id, args...);
-		_components[T::signature()] = component_id;
+		_components[T::id()] = component_id;
+		
+		// Update entity's signature
+		_signature |= T::signature();
 	}
 
 	template<typename T>
 	T* getComponent()
 	{
-		uint32_t index = _components[T::signature()];
+		uint32_t index = _components[T::id()];
 		if (index != -1)
 			return &(T::getData(index));
 		return nullptr;
+	}
+
+	template<typename T>
+	T& get()
+	{
+		uint32_t index = _components[T::id()];
+		return T::getData(index);
 	}
 
 private:

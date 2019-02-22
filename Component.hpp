@@ -12,12 +12,18 @@ public:
 		return _entity_id;
 	}
 
-	static void init(uint32_t signature)
+	static void init(uint32_t id)
 	{
-		T::_signature = signature;
+		T::_id = id;
+		T::_signature = 1U << _id;
 	}
 
-	static uint32_t signature()
+	static constexpr uint32_t id()
+	{
+		return _id;
+	}
+
+	static constexpr uint64_t signature()
 	{
 		return _signature;
 	}
@@ -44,12 +50,16 @@ protected:
 
 	friend T;
 
-	static uint32_t _signature;
+	static uint32_t _id;
+	static uint64_t _signature;
 	static fva::SwapArray<T> _data;
 };
 
+template<typename T>
+uint32_t Component<T>::_id;
+
 template<typename T> 
-uint32_t Component<T>::_signature;
+uint64_t Component<T>::_signature;
 
 template<typename T>
 fva::SwapArray<T> Component<T>::_data;

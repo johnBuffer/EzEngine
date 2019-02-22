@@ -21,7 +21,7 @@ public:
 
 	Entity create()
 	{
-		return Entity(++_entity_counter);
+		return Entity(_entity_counter++);
 	}
 
 	void addSystem();
@@ -29,7 +29,7 @@ public:
 	template<typename T>
 	void registerComponent()
 	{
-		T::init(++_component_counter);
+		T::init(_component_counter++);
 	}
 
 private:

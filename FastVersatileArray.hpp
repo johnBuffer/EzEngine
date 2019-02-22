@@ -79,12 +79,12 @@ inline void FastArray<T>::remove(uint32_t index)
 	std::swap(_reverse_index.back(), _reverse_index[index_remove]);
 	std::swap(removed_object, last_object);
 
+	// Add the free index in the list
+	_free_indexes.push_back(index);
+
 	// Erase
 	_reverse_index.pop_back();
 	_data.pop_back();
-
-	// Add the free index in the list
-	_free_indexes.push_back(index);
 }
 
 template<class T>

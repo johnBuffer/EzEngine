@@ -40,3 +40,6 @@ protected:
 	static uint64_t _signature;
 	static fva::FastArray<T> _data;
 };
+
+template<typename T> 
+uint64_t Component<T>::_signature;

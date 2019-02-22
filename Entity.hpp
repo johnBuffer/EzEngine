@@ -1,12 +1,21 @@
 #pragma once
-#include <stdint.h>
+#include "FastVersatileArray.hpp"
 
 class Entity
 {
 public:
-	Entity();
+	Entity() = default;
 
-protected:
+	template<typename T, typename... Args>
+	void addComponents(Args&&...)
+	{
+
+	}
+
+private:
+
 	uint32_t _id;
+	uint64_t _signature;
+	fva::FastArray<uint32_t> _components;
 
 };

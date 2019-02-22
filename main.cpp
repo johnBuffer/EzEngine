@@ -2,15 +2,20 @@
 #include "Engine.hpp"
 
 #include "Helper.hpp"
+#include "Component.hpp"
+#include "container.hpp"
+
+struct LOL : public Component<LOL>
+{
+
+};
 
 int main()
 {
-	const char* pc;
-	//char* const pcc;
+	LOL lol;
+	LOL::init(1001);
 
-	char lol[] = "lololololol";
-
-	pc = lol;
+	std::cout << lol.signature() << std::endl;
 	
 	Engine engine;
 

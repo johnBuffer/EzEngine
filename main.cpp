@@ -19,7 +19,6 @@ int main()
 	e->addComponent<Position>(5, 12);
 	e->addComponent<Velocity>(1, 1);
 
-
 	while (true)
 	{
 		engine.update(0.016f);

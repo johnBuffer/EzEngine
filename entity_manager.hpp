@@ -35,7 +35,7 @@ namespace ez
 		template<typename... Args>
 		std::list<EntityHandle> _get()
 		{
-			const uint64_t signature = ComponentSet<Args...>::getSignature();
+			const uint64_t signature = getSignature<Args...>();
 			std::list<EntityHandle> result_set;
 
 			for (const Entity& entity : _entities)

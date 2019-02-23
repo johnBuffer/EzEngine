@@ -23,7 +23,7 @@ public:
 	template<typename T, typename... Components>
 	void addSystem()
 	{
-		const uint64_t signature = ComponentSet<Components...>::getSignature();
+		const uint64_t signature = getSignature<Components...>();
 		T* new_system = new T(signature);
 		new_system->init();
 		_systems.add(new_system);

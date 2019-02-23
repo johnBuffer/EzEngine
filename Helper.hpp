@@ -3,10 +3,10 @@
 #include <iostream>
 
 template <typename... T>
-struct EntitySet;
+struct ComponentSet;
 
 template <>
-struct EntitySet<>
+struct ComponentSet<>
 {
 	static constexpr uint64_t getSignature()
 	{
@@ -15,10 +15,10 @@ struct EntitySet<>
 };
 
 template <typename First, typename... Rest>
-struct EntitySet<First, Rest...>
+struct ComponentSet<First, Rest...>
 {
 	static constexpr uint64_t getSignature()
 	{
-		return First::signature() | EntitySet<Rest...>::getSignature();
+		return First::signature() | ComponentSet<Rest...>::getSignature();
 	}
 };

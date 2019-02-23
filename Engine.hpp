@@ -15,9 +15,9 @@ public:
 
 	void update(float dt)
 	{
-		for (System& system : _systems)
+		for (System* system : _systems)
 		{
-			system.update(dt);
+			system->update(dt);
 		}
 	}
 
@@ -27,7 +27,13 @@ public:
 		return EntityHandle(&_entities, index);
 	}
 
-	void addSystem();
+	template<typename T, typename... Components>
+	void addSystem()
+	{
+		const uint64_t signature = ComponentSet<Components...>::getSignature();
+		T* new_system = new T(signature);
+		_systems.add(new_system);
+	}
 
 	template<typename T>
 	void registerComponent()
@@ -38,12 +44,11 @@ public:
 	template<typename... Args>
 	std::list<EntityHandle> getMatching()
 	{
-		const uint64_t signature = EntitySet<Args...>::getSignature();
+		const uint64_t signature = ComponentSet<Args...>::getSignature();
 		std::list<EntityHandle> result_set;
 
 		for (const Entity& entity : _entities)
 		{
-			std::cout << "LOL" << std::endl;
 			if (entity.getSignature() == signature)
 			{
 				result_set.emplace_back(&_entities, entity);
@@ -57,7 +62,7 @@ private:
 	uint32_t _entity_counter;
 	uint32_t _component_counter;
 
-	fva::SwapArray<System> _systems;
+	fva::SwapArray<System*> _systems;
 	fva::SwapArray<Entity> _entities;
 };
 

@@ -2,6 +2,8 @@
 
 #include "System.hpp"
 #include "Entity.hpp"
+#include "Helper.hpp"
+#include <list>
 
 class Engine
 {
@@ -19,9 +21,10 @@ public:
 		}
 	}
 
-	Entity create()
+	EntityHandle create()
 	{
-		return Entity(_entity_counter++);
+		uint32_t index = _entities.add(_entity_counter++);
+		return EntityHandle(&_entities, index);
 	}
 
 	void addSystem();
@@ -32,9 +35,29 @@ public:
 		T::init(_component_counter++);
 	}
 
-private:
-	fva::SwapArray<System> _systems;
+	template<typename... Args>
+	std::list<EntityHandle> getMatching()
+	{
+		const uint64_t signature = EntitySet<Args...>::getSignature();
+		std::list<EntityHandle> result_set;
 
+		for (const Entity& entity : _entities)
+		{
+			std::cout << "LOL" << std::endl;
+			if (entity.getSignature() == signature)
+			{
+				result_set.emplace_back(&_entities, entity);
+			}
+		}
+
+		return result_set;
+	}
+
+private:
 	uint32_t _entity_counter;
 	uint32_t _component_counter;
+
+	fva::SwapArray<System> _systems;
+	fva::SwapArray<Entity> _entities;
 };
+

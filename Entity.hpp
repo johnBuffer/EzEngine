@@ -10,7 +10,8 @@ public:
 	Entity() = default;
 
 	explicit Entity(uint32_t id) :
-		_id(id)
+		_id(id),
+		_signature(0U)
 	{}
 
 	template<typename T, typename... Args>
@@ -40,9 +41,49 @@ public:
 		return T::getData(index);
 	}
 
+	uint64_t getSignature() const
+	{
+		return _signature;
+	}
+
 private:
 	uint32_t _id;
 	uint64_t _signature;
 	std::array<uint32_t, MAX_COMPONENTS> _components;
 
+	friend class EntityHandle;
 };
+
+class EntityHandle
+{
+public:
+	EntityHandle() :
+		_source(nullptr),
+		_id(-1)
+	{}
+
+	EntityHandle(fva::SwapArray<Entity>* source, uint32_t id) :
+		_source(source),
+		_id(id)
+	{}
+
+	EntityHandle(fva::SwapArray<Entity>* source, const Entity& entity) :
+		_source(source),
+		_id(entity._id)
+	{}
+
+	Entity* operator->()
+	{
+		return &(this->operator*());
+	}
+
+	Entity& operator*()
+	{
+		return (*_source)[_id];
+	}
+
+private:
+	fva::SwapArray<Entity>* _source;
+	uint32_t _id;
+};
+

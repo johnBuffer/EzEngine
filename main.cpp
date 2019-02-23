@@ -3,6 +3,7 @@
 
 #include "Helper.hpp"
 #include "Component.hpp"
+#include <bitset>
 
 struct Position : public Component<Position>
 {
@@ -35,15 +36,26 @@ int main()
 
 	std::cout << Velocity::signature() << std::endl;
 
-	Entity e = engine.create();
-	e.addComponent<Position>(5, 12);
-	e.addComponent<Velocity>(1, 1);
+	EntityHandle e = engine.create();
+	e->addComponent<Position>(5, 12);
+	e->addComponent<Velocity>(1, 1);
 
-	Position* p = e.getComponent<Position>();
-	if (p)
+	std::list<EntityHandle> matchingSet = engine.getMatching<Position, Velocity>();
+
+	for (EntityHandle& eh : matchingSet)
 	{
-		std::cout << p->x << " " << p->y << std::endl;
+		Position* p = eh->getComponent<Position>();
+		if (p)
+		{
+			std::cout << p->x << " " << p->y << std::endl;
+		}
+		else
+		{
+			std::cout << "Error, cannot find component" << std::endl;
+		}
 	}
+
+	std::cout << "DONE" << std::endl;
 
 	while (true)
 	{

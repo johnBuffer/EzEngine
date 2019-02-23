@@ -1,13 +1,24 @@
 #pragma once
 
-template<typename T>
-uint64_t getSetSignature(uint64_t prev=0)
-{
-	return prev |= T::signature();
-}
+#include <iostream>
 
-template<typename T, typename... Args>
-uint64_t getSetSignature()
+template <typename... T>
+struct EntitySet;
+
+template <>
+struct EntitySet<>
 {
-	return T::signature() |= getSetSignature<Args>();
-}
+	static constexpr uint64_t getSignature()
+	{
+		return 0U;
+	}
+};
+
+template <typename First, typename... Rest>
+struct EntitySet<First, Rest...>
+{
+	static constexpr uint64_t getSignature()
+	{
+		return First::signature() | EntitySet<Rest...>::getSignature();
+	}
+};

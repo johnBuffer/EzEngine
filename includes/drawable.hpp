@@ -8,7 +8,7 @@ public:
 
 	Drawable();
 
-	~Drawable();
+	virtual ~Drawable();
 
 	virtual void draw() = 0;
 

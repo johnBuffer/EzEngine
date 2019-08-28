@@ -22,6 +22,16 @@ void Engine::removeEntity(fva::Handle<Entity*> entity)
 	s_instance.m_entities.remove(entity);
 }
 
+void Engine::addDrawable(Drawable* drawable)
+{
+	s_instance.m_drawables.add(drawable);
+}
+
+void Engine::addUpdatable(Updatable* updatable)
+{
+	s_instance.m_updatables.add(updatable);
+}
+
 void Engine::removeDrawable(fva::Handle<Drawable*> drawable)
 {
 	s_instance.m_drawables.remove(drawable);

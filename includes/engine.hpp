@@ -2,8 +2,6 @@
 
 #include <fast_array.hpp>
 #include "entity.hpp"
-#include "drawable.hpp"
-#include "updatable.hpp"
 
 
 namespace ez
@@ -16,16 +14,12 @@ public:
 	static fva::Handle<Entity*> addEntity(Entity* new_entity);
 	static void removeEntity(fva::Handle<Entity*> entity);
 
-	static void addDrawable(Drawable* drawable);
-	static void addUpdatable(Updatable* updatable);
-
-	static void removeDrawable(fva::Handle<Drawable*> drawable);
-	static void removeUpdatable(fva::Handle<Updatable*> updatable);
+	template<class T>
+	static void registerSystem();
 
 private:
 	fva::SwapArray<Entity*> m_entities;
-	fva::SwapArray<Drawable*> m_drawables;
-	fva::SwapArray<Updatable*> m_updatables;
+	fva::SwapArray<
 
 	Engine() = default;
 	static Engine s_instance;

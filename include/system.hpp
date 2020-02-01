@@ -2,48 +2,59 @@
 
 #include <stdint.h>
 #include <memory>
-#include <fast_array.hpp>
+#include <vector>
 #include "entity.hpp"
+#include "filter.hpp"
 
 
 namespace ez
 {
+	// Interface class
 	class SystemInterface
 	{
 	public:
 		using ptr = std::unique_ptr<SystemInterface>;
 
+		SystemInterface() = default;
+		SystemInterface(const fva::ID filter_)
+			: filter(filter_)
+		{}
+
 		virtual void execute() = 0;
 
-		//void addEntity(fva::Handle<Entity> entity);
-	
+		void add(Entity& entity)
+		{
+			if (matches(entity.getKey())) {
+				entities.push_back(entity.getID());
+			}
+		}
+
+	protected:
+		const fva::ID filter;
+		std::vector<fva::ID> entities;
+
 	private:
-		//fva::Container<Entity> entities;
+		bool matches(fva::ID key) const
+		{
+			return (filter & key) == filter;
+		}
 	};
 
-	template<typename T>
-	class System
+	// Backend class
+	template<typename ...Args>
+	class System : public SystemInterface
 	{
 	public:
 		using ptr = std::unique_ptr<SystemInterface>;
 
-		System() = default;
-		
-		const uint32_t getID() const;
+		System()
+			: SystemInterface(Filter<Args...>().getFilter())
+		{
+		}
 
-		static std::unique_ptr<T> create();
-
-	private:
+		const fva::ID getFilter() const
+		{
+			return filter.getFilter();
+		}
 	};
-
-	template<typename T>
-	inline const uint32_t System<T>::getID() const
-	{
-		return id;
-	}
-	template<typename T>
-	inline std::unique_ptr<T> System<T>::create()
-	{
-		return T::initialize();
-	}
 }

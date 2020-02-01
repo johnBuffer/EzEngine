@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include <fast_array.hpp>
 
 
 
@@ -9,17 +9,17 @@ class Filter
 {
 public:
 	Filter()
-		: filter_value(C1::id | Filter<Cs...>().filter_value)
+		: filter_value(C1::getKey() | Filter<Cs...>().filter_value)
 	{
 	}
 
-	uint64_t getFilter()
+	fva::ID getFilter() const
 	{
 		return filter_value;
 	}
 
 private:
-	uint64_t filter_value;
+	fva::ID filter_value;
 };
 
 template<typename C1>
@@ -27,11 +27,20 @@ class Filter<C1>
 {
 public:
 	Filter()
-		: filter_value(C1::id)
+		: filter_value(C1::getKey())
+	{}
+
+	fva::ID getFilter() const
 	{
+		return filter_value;
 	}
 
-	uint64_t filter_value;
+	bool matches(fva::ID key) const
+	{
+		return filter_value & key == filter_value;
+	}
+
+	fva::ID filter_value;
 };
 
 
@@ -41,10 +50,9 @@ class Filter<void>
 public:
 	Filter()
 		: filter_value(0U)
-	{
-	}
+	{}
 
 private:
-	uint64_t filter_value;
+	fva::ID filter_value;
 };
 

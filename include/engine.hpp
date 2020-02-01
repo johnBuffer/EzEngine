@@ -11,14 +11,17 @@ class Engine
 {
 public:
 	static void initialize();
-
 	static Engine& get();
 
+	fva::ID getComponentID();
+
 private:
-	fva::Container<Entity> m_entities;
+	//fva::Container<Entity> m_entities;
 	std::vector<SystemInterface> m_systems;
+
+	uint64_t component_count;
 	
-	Engine() = default;
+	Engine();
 	static Engine s_instance;
 };
 }

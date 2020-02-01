@@ -15,10 +15,10 @@ namespace ez
 
 		virtual void execute() = 0;
 
-		void addEntity(fva::Handle<Entity> entity);
+		//void addEntity(fva::Handle<Entity> entity);
 	
 	private:
-		fva::Container<Entity> entities;
+		//fva::Container<Entity> entities;
 	};
 
 	template<typename T>

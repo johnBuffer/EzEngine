@@ -55,6 +55,6 @@ struct ObjectPtr
 		return res;
 	}
 
-	Getter<T> getter;
-	uint64_t index;
+	const Getter<T> getter;
+	const uint64_t index;
 };

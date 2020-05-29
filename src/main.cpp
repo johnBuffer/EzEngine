@@ -1,67 +1,33 @@
 #include <iostream>
-#include "filter.hpp"
-#include "component.hpp"
-#include "engine.hpp"
-#include "entity.hpp"
-#include "system.hpp"
+#include "test_header.hpp"
 
 
-struct C1 : public Component<C1>
+struct GenObj
 {
-	C1()
-		: a(0.0f)
-	{}
-
-	C1(const float f)
-		: a(f)
-	{}
-
-	const float a;
+	float ok;
 };
 
 
-struct C2 : public Component<C2>
+struct TestObj : public ACObject<TestObj>, GenObj
 {
-	C2()
-		: a(0.0f)
-	{}
-
-	C2(const float f)
-		: a(f)
-	{}
-
-	const float a;
-};
-
-
-struct MySystem : public ez::System<C1, C2>
-{
-	void execute() override
-	{
-		for (fva::ID id : entities) {
-			const ez::Entity& entity = ez::Engine::get().getEntity(id);
-			const float sum = entity.get<C1>().a + entity.get<C2>().a;
-			std::cout << "Working on " << id << " sum: " << sum << std::endl;
-		}
-	}
+	float lol;
 };
 
 
 int main()
-{	
-	ez::Engine::initialize();
-	C1::initialize();
-	C2::initialize();
+{
+	TestObj::objects.resize(5);
+	TestObj::objects[0].ok = 8.0f;
+	TestObj::objects[0].lol = 4.0f;
 
-	ez::Engine& engine = ez::Engine::get();
-	engine.registerSystem<MySystem>();
-	
-	ez::Entity entity;
-	entity.add<C1>(3.14159f);
-	entity.add<C2>(2.0f);
-	engine.addEntity(entity);
+	ObjectPtr<TestObj> test_ptr(0);
 
-	engine.update();
+	std::cout << test_ptr->ok << std::endl;
+	std::cout << test_ptr->lol << std::endl;
+
+	ObjectPtr<GenObj> gen_ptr = test_ptr;
+
+	std::cout << gen_ptr->ok << std::endl;
 
 	return 0;
 }

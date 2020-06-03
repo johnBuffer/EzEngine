@@ -10,7 +10,7 @@ using Getter = T*(*)(uint64_t);
 template<typename T>
 struct ACObject
 {
-	static T* getAt(uint64_t index)
+	static T* getByIndex(uint64_t index)
 	{
 		return &objects[index];
 	}
